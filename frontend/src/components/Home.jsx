@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginActions } from '../store/storeLogin';
 import { theme } from '../index';
 import { Grid, Box } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
@@ -11,6 +10,7 @@ import FormularioProducto from './homeComponents/FormularioProducto';
 import TablaProductos from './homeComponents/TablaProductos'
 
 function Home() {
+
     const userData = useSelector((state) => state.login);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -23,12 +23,6 @@ function Home() {
             navigate('/login');
         }
     }, [isLoggedin, navigate]);
-
-    // Logout
-    const handleLogout = () => {
-        dispatch(loginActions.logout());
-        navigate('/login');
-    };
 
     // Comprobamos por consola qué obtenemos en userData
     console.log(userData);

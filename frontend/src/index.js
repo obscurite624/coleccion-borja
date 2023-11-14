@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom'; 
+import ReactDOM from 'react-dom';
 import App from './App';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -39,14 +39,14 @@ const theme = createTheme({
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-<React.StrictMode>
-<CssBaseline />
-<ThemeProvider theme={theme}>
-<Provider store={store}>
-<App />
-</Provider>
-</ThemeProvider>
-</React.StrictMode>
+  <React.StrictMode>
+    <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ThemeProvider>
+  </React.StrictMode>
 );
 
 export { theme }; 

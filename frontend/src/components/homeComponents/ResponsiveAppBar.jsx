@@ -13,16 +13,16 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import PersonIcon from '@mui/icons-material/Person';
 import { loginActions } from '../../store/storeLogin'
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import { useSelector, useDispatch } from 'react-redux'; 
 
 const pages = ['Inicio', 'Informes', 'Ayuda'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Perfil', 'Cuenta', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { userName, userRol } = useSelector((state) => state.login);
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -112,7 +112,7 @@ function ResponsiveAppBar() {
                         variant="h5"
                         noWrap
                         component="a"
-                        href="#app-bar-with-responsive-menu"
+                        href="#AppBarMenu"
                         sx={{
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },
