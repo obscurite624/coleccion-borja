@@ -45,7 +45,7 @@ function ResponsiveAppBar() {
     // Logout
     const handleLogout = () => {
         dispatch(loginActions.logout());
-        navigate('/login');
+        navigate('/');
     }
 
     return (

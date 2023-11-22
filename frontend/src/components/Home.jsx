@@ -1,28 +1,34 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../index';
 import { Grid, Box } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './homeComponents/ResponsiveAppBar';
-import FormularioProducto from './homeComponents/FormularioProducto';
-import TablaProductos from './homeComponents/TablaProductos'
+import FormularioProducto from './homeComponents/FormTable';
 
 function Home() {
 
+    const [tableData, setTableData] = useState([]);
+    const [item, setItem] = useState({
+        nombre: '',
+        marca: '',
+        tipo: '',
+        precio: '',
+    });
     const userData = useSelector((state) => state.login);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+
 
     const isLoggedin = userData.isAutenticated;
 
     useEffect(() => {
         // Comprobar si el usuario está autenticado
         if (!isLoggedin) {
-            navigate('/login');
+            navigate('/');
         }
-    }, [isLoggedin, navigate]);
+    }, [isLoggedin]);
 
     // Comprobamos por consola qué obtenemos en userData
     console.log(userData);
@@ -46,16 +52,9 @@ function Home() {
                     alignItems="center"
                     style={{ marginTop: '20px' }}
                 >
+
                     <FormularioProducto />
-                    
-                </Grid>
-                <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="center"
-                    style={{ marginTop: '20px' }}
-                >
-                    <TablaProductos />
+
                 </Grid>
             </Box>
         </ThemeProvider>

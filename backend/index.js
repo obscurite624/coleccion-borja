@@ -1,10 +1,12 @@
+//importo el express y el cors
 const express = require('express')
 const cors = require('cors')
+//importo el fichero login.js que está en la carpeta services
 const login = require('./services/login')
-const items = require('./services/items');
+const item = require('./services/items')
 
-// Puerto de la API
-const port = 3030
+//Definimos el puerto por que va a escuchar nuestra API las peticiones
+const port = 3030 // PUERTO API
 
 const app = express()
 app.use(express.json())
@@ -29,36 +31,34 @@ app.get('/login', async function (req, res, next) {
 })
 
 // esto son los endnpointd+s
-app.post('/addItem', async function (req, res, next) {  // Changed to POST
+app.get('/addItem', async function (req, res, next) {
+    console.log(req)
     try {
-        const result = await items.insertData(req);
-        const newProduct = await items.getProductById(result); // Assuming there's a function to get the newly added product
-
-        res.json(newProduct);
+        res.json(await item.insertData(req))
     } catch (err) {
-        console.error(`Error al intentar `, err.message);
+        console.error(`Error while inserting items `, err.message);
         next(err);
     }
-});
+})
 
 app.get('/getData', async function (req, res, next) {
     try {
-        res.json(await items.getData(req, res));
+        res.json(await item.getData(req, res));
     } catch (err) {
-        console.error(`Error al recibir los datos `, err.message);
+        console.error(`Error while getting data `, err.message);
         next(err);
     }
 });
-app.delete('/deleteData', async function (req, res, next) {
+
+app.get('/deleteItem', async function (req, res, next) {
     try {
-        res.json(await items.deleteData(req, res));
+        res.json(await item.deleteData(req, res))
     } catch (err) {
         console.error(`Error while deleting items `, err.message);
         next(err);
     }
-});
+})
 
-
-// Inización de la API
+//Iniciamos la API
 app.listen(port)
 console.log('API escuchando en el puerto ' + port)
