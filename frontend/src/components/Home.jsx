@@ -8,15 +8,10 @@ import { ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './homeComponents/ResponsiveAppBar';
 import FormularioProducto from './homeComponents/FormTable';
 
+// Borja Vega Suárez
+
 function Home() {
 
-    const [tableData, setTableData] = useState([]);
-    const [item, setItem] = useState({
-        nombre: '',
-        marca: '',
-        tipo: '',
-        precio: '',
-    });
     const userData = useSelector((state) => state.login);
     const navigate = useNavigate();
 
@@ -24,13 +19,14 @@ function Home() {
     const isLoggedin = userData.isAutenticated;
 
     useEffect(() => {
-        // Comprobar si el usuario está autenticado
+
+        // Autenticación del usuario
         if (!isLoggedin) {
             navigate('/');
         }
     }, [isLoggedin]);
 
-    // Comprobamos por consola qué obtenemos en userData
+    // Imprimimos en la consola el contenido de userData
     console.log(userData);
 
     return (

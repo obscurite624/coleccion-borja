@@ -14,7 +14,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
-import { addProduct, deleteProduct, setProducts } from '../../store/storeProducts';
+import { setProducts } from '../../store/storeProducts';
 
 const FormularioProducto = () => {
     const [item, setItem] = useState({
@@ -33,11 +33,11 @@ const FormularioProducto = () => {
             .then(response => response.json())
             .then(data => {
                 setTableData(data.data);
-                setLoading(false); // Set loading to false once data is fetched
+                setLoading(false);
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
-                setLoading(false); // Set loading to false on error
+                console.error('Error al obtener datos:', error);
+                setLoading(false);
             });
 
     }, []);
@@ -63,7 +63,6 @@ const FormularioProducto = () => {
                     if (response < 0) {
                         alert('Error al borrar datos');
                     } else {
-                        alert('Datos borrados exitosos');
                         handleGetItem();
                     }
                 }
@@ -106,10 +105,8 @@ const FormularioProducto = () => {
         fetch(`http://localhost:3030/addItem?nombre=${item.nombre}&marca=${item.marca}&tipo=${item.tipo}&precio=${item.precio}`)
             .then(response => response.json())
             .then(response => {
-                if (response > 0) {
-                    alert("Operación realizada con éxito");
-                } else {
-                    console.log("Operación fallida :(");
+                if (response == 0) {
+                    console.log("Operación fallida");
                 }
                 handleGetItem();
             })
@@ -124,7 +121,6 @@ const FormularioProducto = () => {
                 const response = await fetch('http://localhost:3030/getData');
                 const data = await response.json();
 
-                // Dispatch action to set products in the store
                 dispatch(setProducts(data.data));
             } catch (error) {
                 console.error('Error al obtener datos:', error);

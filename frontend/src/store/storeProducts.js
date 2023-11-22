@@ -4,9 +4,11 @@ const productsSlice = createSlice({
     name: 'products',
     initialState: [],
     reducers: {
-        setProducts: (state, action) => {
+
+        setProducts: (action) => {
             return action.payload;
         },
+
         addProduct: (state, action) => {
             const existingProductIndex = state.findIndex(
                 (product) => product.id === action.payload.id
@@ -20,9 +22,11 @@ const productsSlice = createSlice({
                 );
             }
         },
+
         deleteProduct: (state, action) => {
             return state.filter((product) => product.id !== action.payload);
         },
+        
     },
 });
 

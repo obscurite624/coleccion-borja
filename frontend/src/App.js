@@ -1,9 +1,11 @@
 import React from 'react';
-import { Provider } from 'react-redux';  // Import Provider
+import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './components/Login';
 import Home from './components/Home';
-import store from './store';  // Import your Redux store
+import store from './store'; 
+
+// Borja Vega Suárez
 
 const router = createBrowserRouter([
   {

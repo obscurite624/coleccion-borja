@@ -6,6 +6,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Provider } from 'react-redux';
 import store from './store/index';
 
+// Borja Vega Suárez
+
 const theme = createTheme({
   palette: {
     mode: 'dark',
