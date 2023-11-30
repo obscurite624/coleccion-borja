@@ -14,6 +14,7 @@ import { loginActions } from '../../store/storeLogin'
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
 
 function ResponsiveAppBar() {
@@ -22,7 +23,7 @@ function ResponsiveAppBar() {
     const navigate = useNavigate();
     const { userName, userRol } = useSelector((state) => state.login);
 
-    const pagesAdmin = ['Inicio', 'Informes', 'Ayuda'];
+    const pagesAdmin = ['Inicio', 'Informes', 'Usuarios', 'Ayuda'];
     const pages = ['Inicio', 'Ayuda'];
     const settings = [`Nombre: ${userName}`, `Rol: ${userRol}`, 'Logout'];
 
@@ -40,13 +41,31 @@ function ResponsiveAppBar() {
 
         // Lógica común para todas las páginas
         if (page === 'Inicio') {
-            navigate('/home');
-        } else if (page === 'Informes' && userRol === 'user') {
+
             navigate('/home');
 
-        } else if (page === 'Informes' && userRol === 'admin') {
+        } else if (page === 'Informes' && userRol === 'user') {
+
             navigate('/informes');
+
+        } else if (page === 'Informes' && userRol === 'admin') {
+
+            navigate('/informes');
+
+        } else if (page === 'Ayuda') {
+
+            window.open('/userManual.pdf', '_blank');
+
+        } else if (page === 'Usuarios' && userRol === 'user') {
+
+            navigate('/home');
+
+        } else if (page === 'Usuarios' && userRol === 'admin') {
+
+            navigate('/usuarios');
+
         }
+        
     };
 
     // Logout
@@ -62,7 +81,12 @@ function ResponsiveAppBar() {
 
                     {userRol === 'admin' ? (
                         <AdminPanelSettingsIcon sx={{ color: 'red', display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                    ) : (
+                    ) : 
+                    userRol === 'guest' ? (
+                        <InsertEmoticonIcon sx={{ color: 'red', display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                    ) :
+                    
+                    (
                         <PersonIcon sx={{ color: 'red', display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                     )}
 
@@ -87,9 +111,11 @@ function ResponsiveAppBar() {
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {(userRol === 'admin' ? pagesAdmin : pages).map((page) => (
-                            <MenuItem key={page} onClick={() => handlePageClick(page)}>
-                                <Typography textAlign="center">{page}</Typography>
-                            </MenuItem>
+                            <Tooltip title={`Ir a ${page}`} key={page}>
+                                <MenuItem onClick={() => handlePageClick(page)}>
+                                    <Typography textAlign="center">{page}</Typography>
+                                </MenuItem>
+                            </Tooltip>
                         ))}
                     </Box>
 

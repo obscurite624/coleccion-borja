@@ -1,14 +1,12 @@
 import { ThemeProvider } from '@emotion/react';
 import ResponsiveAppBar from './homeComponents/ResponsiveAppBar';
 import { theme } from '../index';
-import { Grid, Box, Button } from '@mui/material';
+import { Grid, Box, Button, Tooltip } from '@mui/material';
 import TablaInformes from './informesComponents/InformeColeccion';
+import TablaUsers from './informesComponents/InformeUsuarios'
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
-
-
 
 function Informes() {
 
@@ -26,10 +24,16 @@ function Informes() {
     }, [isLoggedin]);
 
 
-    const [mostrarTabla, setMostrarTabla] = useState(false);
+    const [mostrarTablaColeccion, setMostrarTablaColeccion] = useState(false);
 
-    const handleGenerarInforme = () => {
-        setMostrarTabla(true);
+    const handleGenerarInformeColeccion = () => {
+        setMostrarTablaColeccion(true);
+    };
+
+    const [mostrarTablaUsers, setMostrarTablaUsers] = useState(false);
+
+    const handleGenerarInformeUsers = () => {
+        setMostrarTablaUsers(true);
     };
 
     return (
@@ -53,11 +57,35 @@ function Informes() {
                     alignItems="center"
                     style={{ marginTop: '20px' }}
                 >
-                    {mostrarTabla ? (
+                    {mostrarTablaColeccion ? (
                         <TablaInformes />
                     ) : (
-                        <Button onClick={handleGenerarInforme} variant="contained" color="primary">
-                            Generar Informe
+                        <Button onClick={handleGenerarInformeColeccion} variant="contained" color="primary">
+                            <Tooltip title="Generar Informe Colección">
+                                <span>
+                                    Generar Informe Colección
+                                </span>
+                            </Tooltip>
+                        </Button>
+                    )}
+                </Grid>
+
+                <Grid
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    style={{ marginTop: '20px' }}
+                >
+                    {mostrarTablaUsers ? (
+                        <TablaUsers />
+                    ) : (
+                        <Button onClick={handleGenerarInformeUsers} variant="contained" color="primary">
+                            <Tooltip title="Generar Informe Usuarios">
+                                <span>
+                                    Generar Informe Usuarios
+                                </span>
+                            </Tooltip>
                         </Button>
                     )}
                 </Grid>

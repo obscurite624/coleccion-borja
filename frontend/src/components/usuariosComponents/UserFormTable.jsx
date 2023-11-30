@@ -18,14 +18,15 @@ import { IconButton } from '@mui/material';
 import { setProducts } from '../../store/storeProducts';
 import { useSelector } from 'react-redux';
 
-const FormularioProducto = () => {
+const FormularioUsers = () => {
 
-    const [item, setItem] = useState({
+    const [user, setUser] = useState({
         nombre: '',
-        marca: '',
-        tipo: '',
-        precio: '',
+        login: '',
+        password: '',
+        rol: '',
     });
+
     const [tableData, setTableData] = useState([]);
     const dispatch = useDispatch();
 
@@ -33,7 +34,7 @@ const FormularioProducto = () => {
 
     useEffect(() => {
 
-        fetch('http://localhost:3030/getData')
+        fetch('http://localhost:3030/getUsers')
             .then(response => response.json())
             .then(data => {
                 setTableData(data.data);
@@ -46,9 +47,9 @@ const FormularioProducto = () => {
 
     }, []);
 
-    const handleGetItem = () => {
+    const handleGetUsers = () => {
 
-        fetch('http://localhost:3030/getData')
+        fetch('http://localhost:3030/getUsers')
             .then(response => response.json())
             .then(response => {
                 if (response) {
@@ -61,16 +62,16 @@ const FormularioProducto = () => {
 
     };
 
-    const handleDeleteItem = (id) => {
+    const handleDeleteUser = (id) => {
 
-        fetch(`http://localhost:3030/deleteItem?id=${id}`)
+        fetch(`http://localhost:3030/deleteUser?id=${id}`)
             .then(response => response.json())
             .then(response => {
                 if (response) {
                     if (response < 0) {
                         alert('Error al borrar datos');
                     } else {
-                        handleGetItem();
+                        handleGetUsers();
                     }
                 }
 
@@ -80,29 +81,29 @@ const FormularioProducto = () => {
             });
     };
 
-    const handleSaveItem = (e) => {
+    const handleSaveUser = (e) => {
 
         e.preventDefault();
-        if (item.nombre.trim() === '' || item.marca.trim() === '' || item.tipo.trim() === '' || item.precio.trim() === '') {
+        if (user.nombre.trim() === '' || user.login.trim() === '' || user.password.trim() === '' || user.rol.trim() === '') {
             console.log("Datos incompletos");
         } else {
             handleSubmit(e);
-            handleGetItem();
+            handleGetUsers();
 
             // Reseteo de los campos
-            setItem({
+            setUser({
                 nombre: '',
-                marca: '',
-                tipo: '',
-                precio: '',
+                login: '',
+                password: '',
+                rol: '',
             });
         }
     };
 
 
     const handleInputChange = (event, field) => {
-        setItem((prevItem) => ({
-            ...prevItem,
+        setUser((prevUser) => ({
+            ...prevUser,
             [field]: event.target.value,
 
         }));
@@ -110,25 +111,29 @@ const FormularioProducto = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(item.nombre);
+        console.log(user.nombre);
 
-        fetch(`http://localhost:3030/addItem?nombre=${item.nombre}&marca=${item.marca}&tipo=${item.tipo}&precio=${item.precio}`)
+        fetch(`http://localhost:3030/addUser?nombre=${user.nombre}&login=${user.login}&password=${user.password}&rol=${user.rol}`)
             .then(response => response.json())
             .then(response => {
                 if (response === 0) {
                     console.log("Operación fallida");
                 }
-                handleGetItem();
+                handleGetUsers();
             })
             .catch(error => {
                 console.error('Error al realizar la operación:', error);
             });
     };
 
+    const { userRol } = useSelector((state) => state.login);
+
+    const isAdmin = userRol === 'admin';
+
     useEffect(() => {
-        const fetchItems = async () => {
+        const fetchUsers = async () => {
             try {
-                const response = await fetch('http://localhost:3030/getData');
+                const response = await fetch('http://localhost:3030/getUsers');
                 const data = await response.json();
 
                 dispatch(setProducts(data.data));
@@ -137,62 +142,56 @@ const FormularioProducto = () => {
             }
         };
 
-        fetchItems();
+        fetchUsers();
     }, [dispatch]);
-
-    const { userRol } = useSelector((state) => state.login);
-
-    const isAdmin = userRol === 'admin';
-    const isGuest = userRol === 'guest';
-    const isUser = userRol === 'user';
 
     return (
         <>
             <Paper elevation={3} style={{ padding: 20, width: '100%' }}>
-                <Box component="form" autoComplete="off" onSubmit={handleSaveItem} sx={{ marginBottom: 2, textAlign: 'center' }}>
+                <Box component="form" autoComplete="off" onSubmit={handleSaveUser} sx={{ marginBottom: 2, textAlign: 'center' }}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={6}>
+                        <Grid user xs={12} md={6}>
                             <TextField
                                 label="Nombre"
                                 required
                                 fullWidth
-                                value={item.nombre}
+                                value={user.nombre}
                                 onChange={(event) => handleInputChange(event, 'nombre')}
                             />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid user xs={12} md={6}>
                             <TextField
-                                label="Marca"
+                                label="Login"
                                 required
                                 fullWidth
-                                value={item.marca}
-                                onChange={(event) => handleInputChange(event, 'marca')}
+                                value={user.login}
+                                onChange={(event) => handleInputChange(event, 'login')}
                             />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid user xs={12} md={6}>
                             <TextField
-                                label="Tipo"
+                                label="Password"
                                 required
                                 fullWidth
-                                value={item.tipo}
-                                onChange={(event) => handleInputChange(event, 'tipo')}
+                                value={user.password}
+                                onChange={(event) => handleInputChange(event, 'password')}
                             />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid user xs={12} md={6}>
                             <TextField
-                                label="Precio"
+                                label="Rol"
                                 required
                                 fullWidth
-                                value={item.precio}
-                                onChange={(event) => handleInputChange(event, 'precio')}
+                                value={user.rol}
+                                onChange={(event) => handleInputChange(event, 'rol')}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            {!isGuest && <Button variant="contained" color="primary" type="submit">
-                                <Tooltip title="Insertar producto">
+                            {isAdmin && <Button variant="contained" color="primary" type="submit">
+                                <Tooltip title="Insertar usuario">
                                     <span>
                                         <SaveIcon style={{ marginRight: '8px' }} />
-                                        Guardar producto
+                                        Guardar user
                                     </span>
                                 </Tooltip>
                             </Button>}
@@ -203,15 +202,14 @@ const FormularioProducto = () => {
 
             <div style={{ margin: '20px 0' }} />
 
-            <TablaProductos tableData={tableData} handleDeleteItem={handleDeleteItem} />
+            <TablaUsuarios tableData={tableData} handleDeleteItem={handleDeleteUser} />
         </>
     );
 };
 
-const TablaProductos = ({ tableData, handleDeleteItem }) => {
+const TablaUsuarios = ({ tableData, handleDeleteItem }) => {
 
     const { userRol } = useSelector((state) => state.login);
-
     const isAdmin = userRol === 'admin';
 
     return (
@@ -220,9 +218,9 @@ const TablaProductos = ({ tableData, handleDeleteItem }) => {
                 <TableHead>
                     <TableRow>
                         <TableCell>Nombre</TableCell>
-                        <TableCell>Marca</TableCell>
-                        <TableCell>Tipo</TableCell>
-                        <TableCell>Precio</TableCell>
+                        <TableCell>Login</TableCell>
+                        <TableCell>Password</TableCell>
+                        <TableCell>Rol</TableCell>
                         {isAdmin && <TableCell>Eliminar</TableCell>}
                     </TableRow>
                 </TableHead>
@@ -230,9 +228,9 @@ const TablaProductos = ({ tableData, handleDeleteItem }) => {
                     {tableData.map((rowData) => (
                         <TableRow key={rowData.id}>
                             <TableCell>{rowData.nombre}</TableCell>
-                            <TableCell>{rowData.marca}</TableCell>
-                            <TableCell>{rowData.tipo}</TableCell>
-                            <TableCell>{rowData.precio} €</TableCell>
+                            <TableCell>{rowData.login}</TableCell>
+                            <TableCell>{rowData.password}</TableCell>
+                            <TableCell>{rowData.rol}</TableCell>
                             {isAdmin && (
                                 <TableCell>
                                     <Tooltip title="Eliminar" arrow>
@@ -250,4 +248,4 @@ const TablaProductos = ({ tableData, handleDeleteItem }) => {
     );
 };
 
-export default FormularioProducto;
+export default FormularioUsers;

@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Home from './components/Home';
 import Informes from './components/Informes';
 import store from './store'; 
+import Usuarios from './components/Usuarios';
 
 // Borja Vega Suárez
 
@@ -25,6 +26,11 @@ const router = createBrowserRouter([
       {
         path: 'informes',
         element: <Informes />
+      },
+
+      {
+        path: 'usuarios',
+        element: <Usuarios />
       }
       
     ]

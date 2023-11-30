@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const login = require('./services/login')
 const item = require('./services/items')
+const users = require('./services/users')
 
 
 const port = 3030 // puerto de la api
@@ -68,6 +69,46 @@ app.get('/deleteItem', async function (req, res, next) {
     }
 
 })
+
+// Endpoint /addUser
+app.get('/addUser', async function (req, res, next) {
+
+    console.log(req)
+
+    try {
+        res.json(await users.insertUser(req))
+    } catch (err) {
+        console.error(`Error al insertar usuario `, err.message);
+        next(err);
+    }
+
+})
+
+// Endpoint /getUsers
+app.get('/getUsers', async function (req, res, next) {
+
+    try {
+        res.json(await users.getUsers(req, res));
+    } catch (err) {
+        console.error(`Error al obtener los datos de los usuarios`, err.message);
+        next(err);
+    }
+
+});
+
+// Endpoint /deleteUser
+app.get('/deleteUser', async function (req, res, next) {
+
+    try {
+        res.json(await users.deleteUser(req, res))
+    } catch (err) {
+        console.error(`Error al borrar usuario `, err.message);
+        next(err);
+    }
+
+})
+
+
 
 //Iniciamos la API
 app.listen(port, () => {
